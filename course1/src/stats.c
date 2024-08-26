@@ -29,10 +29,10 @@
 
 /*********************************************************************************************************************/
 
-void print_array(unsigned char* array_p, uint8_t array_length)
+void print_array(uint8_t* array_p, uint8_t array_length)
 {
 
-#ifdef DVERBOSE
+#ifdef VERBOSE
   /*check for null pointer*/
   if (array_p == NULL)
   {
@@ -46,15 +46,13 @@ void print_array(unsigned char* array_p, uint8_t array_length)
     return;
   }
 
-  PRINTF("Array: ");
-
-  for (uint8_t i = 0; i < array_length - 1; ++i)
+  for (uint8_t i = 0; i < array_length; ++i)
   {
-    PRINTF("%d, ", array_p[i]);
+    PRINTF("array[%u](0x%x): %u\n",i, array_p + i, *(array_p + i));
   }
 
-  PRINTF("%d\n", array_p[array_length - 1]);
-#endif /*DVERBOSE*/
+  PRINTF("\n");
+#endif /*VERBOSE*/
 }
 
 /*********************************************************************************************************************/

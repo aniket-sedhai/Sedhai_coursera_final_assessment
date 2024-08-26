@@ -21,6 +21,7 @@
  *
  */
 #include "memory.h"
+#include <stdlib.h>
 
 /***********************************************************
  Function Definitions
@@ -50,9 +51,8 @@ void clear_all(char * ptr, unsigned int size){
 
 uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length)
 {
-  int16_t index = 0;
-  int16_t gap = 0;
-  uint16_t i = 0;
+  uint8_t *lasts;
+  uint8_t *lastd;
   
   if ((src == NULL) || (dst == NULL))
   {
@@ -69,32 +69,25 @@ uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length)
     return dst;
   }
   
-  /*check for overlap*/
-  gap = dst - src;
-  
-  /*there is an overlap and destination pointer is at higher address than src pointer*/
-  if ((gap > 0) && (gap < length))
+  // If the destination memory address is less than the source address
+  if (dst < src)
   {
-    for (i = length - gap; i < (length + gap); ++i)
+    while (length--)
     {
-      *(dst + i) = *(src++);
+    	*dst++= *src++;
     }
   }
-  else if ((gap > -1*length) && (gap < 0))
-  {
-    for (i = 0; i < (-1*gap); ++i)
-    {
-      *(dst++) = *(src++);
-    }
-  }
+  // When destination memory address is greater than source address
   else
   {
-    while (index < length)
+    lasts = src + (length-1);    // gets the address of the last source byte
+    lastd = dst + (length-1);    // gets the address of the last destination byte
+    while (length--)
     {
-      *(dst++) = *(src++);
-      index++;
+      *lastd-- = *lasts--;
     }
   }
+  return dst;
 }
 
 uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length)
@@ -121,6 +114,8 @@ uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length)
     *(dst++) = *(src++);
     index++;
   }
+  
+  return dst;
 }
 
 uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value)
@@ -188,20 +183,23 @@ uint8_t * my_reverse(uint8_t * src, size_t length)
   for (index = 0; index < length / 2; ++index)
   {
   	temp_val = *current_val_p;
-  	*current_val_p = *(src + (uint8_t)(length - index));
-  	*(current_val_p + (uint8_t)(length - index)) = temp_val;
+  	*current_val_p = *(src + (uint8_t)(length - index - 1));
+  	*(src + (uint8_t)(length - index - 1)) = temp_val;
+  	current_val_p++;
 	}
+	
+	return src;
 }
 
 int32_t * reserve_words(size_t length)
 {
-	return (uint32_t*) malloc(length * sizeof(uint32_t));
+	return (int32_t*) malloc(length * sizeof(int32_t));
 }
 
-void free_words(int32_t * src)
+void free_words(uint32_t * src)
 {
 	if (src != NULL)
 	{
-		free(src);
+		free((void*)src);
 	}
 }

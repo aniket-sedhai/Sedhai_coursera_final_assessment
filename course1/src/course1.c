@@ -338,6 +338,10 @@ void course1(void)
 
   for ( i = 0; i < TESTCOUNT; i++) 
   {
+  	if (results[i] != 0)
+  	{
+  		PRINTF("TEST %u failed\n", i);
+  	}
     failed += results[i];
   }
 

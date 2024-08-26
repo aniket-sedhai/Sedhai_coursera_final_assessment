@@ -4,6 +4,12 @@
 #include <stdint.h>
 #include <math.h>
 
+enum base
+{
+	BASE_10 = 10,
+	BASE_16 = 16,
+};
+
 /**
  * @brief Converts data from integer type to ascii string
  *

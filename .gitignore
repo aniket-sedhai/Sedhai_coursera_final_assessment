@@ -1,4 +1,5 @@
+*.o
 *.out
 *.map
 *.i
-*.as
+*.asm
